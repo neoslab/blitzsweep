@@ -60,7 +60,7 @@ from urllib.request import Request
 from urllib.request import urlopen
 
 # Define 'VERSION'
-VERSION = "v5.0.2"
+VERSION = "v5.0.4"
 
 # Define 'APPNAME'
 APPNAME = "BlitzClean"
@@ -125,6 +125,7 @@ USERPATH = [
     ".gitconfig",
     ".gnupg",
     ".java",
+    ".local/share/rhythmbox",
     ".local/share/TelegramDesktop",
     ".local/share/virtualenv",
     ".pki",
