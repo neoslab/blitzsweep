@@ -47,12 +47,12 @@ sudo apt install -y python3-pyqt6 python3-pyqt6.qt6-tools trash-cli
 
 ## Installation
 
-Download the latest DEB version from the [releases](https://github.com/neoslab/blitzclean/releases/) section (the current version is v4.9.8) and use the following command:
+Download the latest DEB version from the [releases](https://github.com/neoslab/blitzclean/releases/) section (the current version is v5.0.7) and use the following command:
 
 ```bash
 cd /tmp/
-wget https://github.com/neoslab/blitzclean/releases/download/v4.9.8/blitzclean_4.9.8_all.deb
-sudo dpkg -i blitzclean_4.9.8_all.deb
+wget https://github.com/neoslab/blitzclean/releases/download/v5.0.7/blitzclean_5.0.7_all.deb
+sudo dpkg -i blitzclean_5.0.7_all.deb
 ```
 
 * * *

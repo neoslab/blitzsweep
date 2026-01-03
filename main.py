@@ -60,7 +60,7 @@ from urllib.request import Request
 from urllib.request import urlopen
 
 # Define 'VERSION'
-VERSION = "v5.0.4"
+VERSION = "v5.0.7"
 
 # Define 'APPNAME'
 APPNAME = "BlitzClean"
@@ -74,72 +74,138 @@ CONFIGPATH = Path.home() / ".config" / "blitzclean"
 # Define 'CONFIGFILE'
 CONFIGFILE = CONFIGPATH / "blitzclean.conf"
 
-# Define 'USERPATH'
+# Define 'USERPATH' (updated - removed program-specific paths)
 USERPATH = [
-    ".android",
     ".cache/babl",
-    ".cache/discord",
-    ".cache/easytag",
     ".cache/fontconfig",
-    ".cache/gimp",
-    ".cache/gitstatus",
-    ".cache/inkscape",
-    ".cache/JetBrains",
-    ".cache/JNA",
-    ".cache/kdenlive",
-    ".cache/keepassxc",
     ".cache/mesa_shader_cache",
-    ".cache/Microsoft",
     ".cache/npm",
     ".cache/obexd",
     ".cache/pip",
     ".cache/pnpm",
-    ".cache/Proton AG",
-    ".cache/Proton",
-    ".cache/protonmail",
-    ".cache/rhythmbox",
-    ".cache/shotwell",
-    ".cache/shutter",
-    ".cache/sublime-text",
-    ".cache/thumbnails",
-    ".cache/thunderbird",
     ".cache/totem",
     ".cache/tracker3",
-    ".cache/transmission",
     ".cache/ubuntu-report",
-    ".cache/vscode",
     ".cache/yarn",
     ".config/Code/Cache",
     ".config/Code/CachedData",
     ".config/Code/logs",
-    ".config/discord",
-    ".config/JetBrains",
-    ".config/mediasane",
-    ".config/rclone",
-    ".config/rclone-browser",
-    ".config/shotwell",
     ".config/tiling-assistant",
-    ".config/transmission",
-    ".config/tubereaver",
+    ".config/QtProject.conf",
     ".dotnet",
-    ".gitconfig",
     ".gnupg",
     ".java",
-    ".local/share/rhythmbox",
-    ".local/share/TelegramDesktop",
     ".local/share/virtualenv",
     ".pki",
     ".profile.bak",
     ".putty",
     ".shell.pre-oh-my-zsh",
-    ".shutter",
-    ".ssh",
     ".thumbnails",
     ".wget-hsts",
     ".zcompdump",
-    ".zshrc.bak",
-    "Android"
+    ".zshrc.bak"
 ]
+
+# Define 'PROGRAMS' - new dictionary mapping program names to their paths
+PROGRAMS = {
+    "Android": [
+        ".android",
+        "Android"
+    ],
+    "Discord": [
+        ".cache/discord",
+        ".config/discord"
+    ],
+    "EasyTag": [
+        ".cache/easytag"
+    ],
+    "Evolution": [
+        ".cache/evolution",
+        ".config/evolution",
+        ".config/goa-1.0",
+        ".local/share/evolution",
+        ".local/share/goa-1.0"
+    ],
+    "FileZilla": [
+        ".cache/filezilla",
+        ".config/filezilla"
+    ],
+    "Gimp": [
+        ".cache/gimp",
+        ".config/GIMP"
+    ],
+    "Git": [
+        ".cache/gitstatus",
+        ".config/GitKraken",
+        ".gitconfig",
+        ".gitkraken"
+    ],
+    "Inkscape": [
+        ".cache/inkscape",
+        ".config/inkscape"
+    ],
+    "JetBrains": [
+        ".cache/JetBrains",
+        ".cache/JNA",
+        ".config/JetBrains"
+    ],
+    "Kdenlive": [
+        ".cache/kdenlive",
+        ".config/kdeglobals",
+        ".config/kdenlive-layoutsrc",
+        ".config/kdenliverc"
+    ],
+    "Keepassxc": [
+        ".cache/keepassxc",
+        ".config/keepassxc"
+    ],
+    "Mediasane": [
+        ".config/mediasane"
+    ],
+    "Microsoft": [
+        ".cache/Microsoft"
+    ],
+    "Proton": [
+        ".cache/Proton AG",
+        ".cache/Proton",
+        ".cache/protonmail"
+    ],
+    "Rclone": [
+        ".config/rclone",
+        ".config/rclone-browser"
+    ],
+    "Rhythmbox": [
+        ".cache/rhythmbox",
+        ".local/share/rhythmbox"
+    ],
+    "Shotwell": [
+        ".cache/shotwell",
+        ".config/shotwell"
+    ],
+    "Shutter": [
+        ".cache/shutter",
+        ".shutter"
+    ],
+    "SublimeText": [
+        ".cache/sublime-text"
+    ],
+    "Telegram": [
+        ".local/share/TelegramDesktop"
+    ],
+    "Thunderbird": [
+        ".cache/thunderbird"
+    ],
+    "Transmission": [
+        ".cache/transmission",
+        ".config/transmission"
+    ],
+    "TubeReaver": [
+        ".config/tubereaver"
+    ],
+    "VisualCode": [
+        ".cache/vscode"
+    ]
+}
 
 # Define 'USERAGGRESIVE'
 USERAGGRESIVE = [
@@ -521,7 +587,8 @@ class ExecOpts:
             dryrun=bool(d.get("dryrun", False)),
             clearbrowsers=bool(d.get("clearbrowsers", False)),
             clearkernels=bool(d.get("clearkernels", False)),
-            vacuumdays=int(d.get("vacuumdays,") or d.get("vacuumdays", 7)) if isinstance(d.get("vacuumdays", 7), (str, int)) else 7,
+            vacuumdays=int(d.get("vacuumdays,") or d.get("vacuumdays", 7)) if isinstance(d.get("vacuumdays", 7),
+                                                                                         (str, int)) else 7,
             vacuumsize=str(d.get("vacuumsize", "100M")),
             keepsnaps=int(d.get("keepsnaps", 2)),
             shutafter=bool(d.get("shutafter", False)),
@@ -701,6 +768,9 @@ class FileOps:
                 try:
                     if p.is_file():
                         total += p.stat().st_size
+                    elif p.is_dir():
+                        # Add directory itself as 0 bytes for counting purposes
+                        pass
                 except (OSError, PermissionError, FileNotFoundError):
                     pass
 
@@ -796,7 +866,9 @@ class DockerCleaner:
         if opts.dockernetworks:
             ec, out = ShellExec.capture("docker network ls -q")
             if ec == 0 and out.strip():
-                ShellExec.cmdrun("docker network rm $(docker network ls -q | xargs -n1 docker network inspect -f '{{.Name}} {{.ID}}' | grep -v '^bridge ' | grep -v '^host ' | grep -v '^none ' | awk '{print $2}')", dryrun)
+                ShellExec.cmdrun(
+                    "docker network rm $(docker network ls -q | xargs -n1 docker network inspect -f '{{.Name}} {{.ID}}' | grep -v '^bridge ' | grep -v '^host ' | grep -v '^none ' | awk '{print $2}')",
+                    dryrun)
 
         if any([opts.dockercontainers, opts.dockerimages, opts.dockervolumes, opts.dockernetworks]):
             ShellExec.cmdrun("docker system prune -a --volumes -f", dryrun)
@@ -972,6 +1044,39 @@ class SysCleaner:
                 else:
                     self.addbytes(FileOps.removefile(t, self.opts.dryrun, self.filecb))
 
+    # Function 'cleanupprograms'
+    def cleanupprograms(self, uh: Path):
+        """
+        Clean program-specific paths based on user selection.
+        If a program is enabled in pathopts, remove all its associated paths.
+        Special handling for Evolution: also run dconf reset command.
+        """
+        for program_name, paths in PROGRAMS.items():
+            if not self.enabled(f"program.{program_name}"):
+                continue
+
+            self.checkstop()
+
+            # Clean all paths for this program
+            for rel in paths:
+                self.checkstop()
+                p = (uh / rel).expanduser()
+                if p.exists():
+                    if p.is_dir():
+                        self.addbytes(FileOps.removetree(p, self.opts.dryrun, self.filecb))
+                    else:
+                        self.addbytes(FileOps.removefile(p, self.opts.dryrun, self.filecb))
+
+            # Special handling for Evolution
+            if program_name == "Evolution" and self.enabled(f"program.{program_name}"):
+                self.checkstop()
+                # Run dconf reset command for Evolution
+                if not self.opts.dryrun:
+                    ShellExec.cmdrun("dconf reset -f /org/gnome/evolution/", dryrun=False)
+                else:
+                    # In dry-run mode, just emit a row for the dconf operation
+                    self.filecb("dconf reset -f /org/gnome/evolution/", 0, "-")
+
     # Function 'cleanupuser'
     def cleanupuser(self, uh: Path):
         """
@@ -982,6 +1087,9 @@ class SysCleaner:
         """
         username = Path(uh).name if str(uh) != "/root" else "root"
         self.trashlist(username=username, home=str(uh))
+
+        # Clean programs first
+        self.cleanupprograms(uh)
 
         for rel in USERPATH:
             self.checkstop()
@@ -1038,7 +1146,8 @@ class SysCleaner:
                     parts = line.split()
                     if len(parts) == 2:
                         name, rev = parts
-                        ShellExec.cmdrun(f"snap remove --revision={shlex.quote(rev)} {shlex.quote(name)} --purge", False)
+                        ShellExec.cmdrun(f"snap remove --revision={shlex.quote(rev)} {shlex.quote(name)} --purge",
+                                         False)
 
         if self.opts.clearkernels:
             currentkernel = self.kernelused()
@@ -1133,7 +1242,8 @@ class DialogPrefs(QDialog):
     """
 
     # Function '__init__'
-    def __init__(self, parent: QWidget, opts: ExecOpts, runbootstart: bool, runshutdown: bool, pathopts: Dict[str, bool]):
+    def __init__(self, parent: QWidget, opts: ExecOpts, runbootstart: bool, runshutdown: bool,
+                 pathopts: Dict[str, bool]):
         """
         Construct the preferences dialog with the current settings snapshot.
         Builds tabs for general options and per-path enablement checkboxes.
@@ -1196,6 +1306,26 @@ class DialogPrefs(QDialog):
                 inner.addWidget(cb)
             v.addWidget(box)
 
+        # Function 'addprogramsection'
+        def addprogramsection(title: str, programs: Dict[str, List[str]]):
+            """
+            Helper to add a titled group of checkboxes for programs.
+            Creates one checkbox per program with the program name.
+            """
+            box = QGroupBox(title)
+            inner = QVBoxLayout(box)
+            for program_name in sorted(programs.keys()):
+                cb = QCheckBox(program_name)
+                # Use "program." prefix for program options
+                cb.setChecked(self.pathopts.get(f"program.{program_name}", True))
+                self.chk_map[f"program.{program_name}"] = cb
+                inner.addWidget(cb)
+            v.addWidget(box)
+
+        # Add Programs section first
+        addprogramsection("Programs", PROGRAMS)
+
+        # Add other sections
         addsection("User: Paths", USERPATH)
         addsection("User: Histories", USERHISTORY)
         addsection("User: Browsers", USERBROWSERS)
@@ -1205,7 +1335,7 @@ class DialogPrefs(QDialog):
         addsection("System: Directories", SYSDIRS)
         addsection("System: Logs", [f"{base}::{pat}" for base, pat in SYSGLOBS])
 
-        # New: Docker section inside Options tab
+        # Docker section
         dockerbox = QGroupBox("Docker")
         dockerinner = QVBoxLayout(dockerbox)
         self.cbdockercontainers = QCheckBox("Containers")
@@ -1305,7 +1435,8 @@ class DialogAbout(QDialog):
                     break
 
         if pix:
-            logolabel.setPixmap(pix.scaled(96, 96, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+            logolabel.setPixmap(
+                pix.scaled(96, 96, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
 
         title = QLabel(f"<b>{APPNAME}</b>")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -1378,7 +1509,8 @@ class DialogCompleted(QDialog):
                     pix = tmp
                     break
         if pix:
-            iconlabel.setPixmap(pix.scaled(96, 96, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
+            iconlabel.setPixmap(
+                pix.scaled(96, 96, Qt.AspectRatioMode.KeepAspectRatio, Qt.TransformationMode.SmoothTransformation))
 
         title = QLabel("<b>Cleanup finished successfully</b>" if not error_message else "<b>Cleanup failed</b>")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -1578,18 +1710,22 @@ class BlitzClean(QWidget):
         self.opts.dockernetworks = loadbool("dockernetworks", False)
 
         all_keys = (
-            USERPATH
-            + USERHISTORY
-            + USERBROWSERS
-            + USERMISCS
-            + USERAGGRESIVE
-            + ROOTITEMS
-            + SYSDIRS
-            + [f"{base}::{pat}" for base, pat in SYSGLOBS]
+                USERPATH
+                + USERHISTORY
+                + USERBROWSERS
+                + USERMISCS
+                + USERAGGRESIVE
+                + ROOTITEMS
+                + SYSDIRS
+                + [f"{base}::{pat}" for base, pat in SYSGLOBS]
         )
 
         for k in all_keys:
             self.pathopts[k] = loadbool(f"options.{k}", True)
+
+        # Load program options
+        for program_name in PROGRAMS.keys():
+            self.pathopts[f"program.{program_name}"] = loadbool(f"options.program.{program_name}", True)
 
         saved_user = loadstring("username", "")
         for i in range(self.cmb_user.count()):
@@ -1897,21 +2033,6 @@ class UpdateChecker:
         l = l + (0,) * (ln - len(l))
         return c < l
 
-    # Function 'checknotify'
-    def checknotify(self, timeout: int = 3):
-        """
-        Perform a single update check against GitHub releases.
-        If a newer tag exists, show the update popup dialog.
-        Intended to be called from the main GUI thread.
-        """
-        latest = self.fetchtag(timeout=timeout)
-        if not latest:
-            return
-        if not self.checknewer(self.currvers, latest):
-            return
-        url = f"https://github.com/{self.gitrepo}/releases/tag/{latest}"
-        self.showupdate(latest, url)
-
     # Function 'fetchtag'
     def fetchtag(self, timeout: int = 3) -> Optional[str]:
         """
@@ -1936,6 +2057,21 @@ class UpdateChecker:
 
         except (HTTPError, URLError, socket.timeout, ValueError, OSError):
             return None
+
+    # Function 'checknotify'
+    def checknotify(self, timeout: int = 3):
+        """
+        Perform a single update check against GitHub releases.
+        If a newer tag exists, show the update popup dialog.
+        Intended to be called from the main GUI thread.
+        """
+        latest = self.fetchtag(timeout=timeout)
+        if not latest:
+            return
+        if not self.checknewer(self.currvers, latest):
+            return
+        url = f"https://github.com/{self.gitrepo}/releases/tag/{latest}"
+        self.showupdate(latest, url)
 
     # Function 'showupdate'
     def showupdate(self, latest: str, url: str):
@@ -2031,17 +2167,23 @@ class AppEntry:
             cfg = ConfigManager.load()
             pathopts: Dict[str, bool] = {}
             all_keys = (
-                USERPATH
-                + USERHISTORY
-                + USERBROWSERS
-                + USERMISCS
-                + USERAGGRESIVE
-                + ROOTITEMS
-                + SYSDIRS
-                + [f"{base}::{pat}" for base, pat in SYSGLOBS]
+                    USERPATH
+                    + USERHISTORY
+                    + USERBROWSERS
+                    + USERMISCS
+                    + USERAGGRESIVE
+                    + ROOTITEMS
+                    + SYSDIRS
+                    + [f"{base}::{pat}" for base, pat in SYSGLOBS]
             )
+
             for k in all_keys:
                 pathopts[k] = cfg.get(f"options.{k}", "1") in ("1", "true", "True", "yes")
+
+            # Load program options
+            for program_name in PROGRAMS.keys():
+                pathopts[f"program.{program_name}"] = cfg.get(f"options.program.{program_name}", "1") in ("1", "true",
+                                                                                                          "True", "yes")
 
             # Function 'rowcheckbox'
             def rowcheckbox(path: str, size_b: int, mtime: str):
