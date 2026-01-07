@@ -1,9 +1,9 @@
-# BlitzClean — Ubuntu Cleanup GUI
+# BlitzSweep — Ubuntu Cleanup GUI
 
 ![Python Version](https://img.shields.io/badge/python-3.12%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-**BlitzClean** is a fast, no-nonsense GUI utility to clean common caches, logs, and stale data on Ubuntu (and Debian-based) systems. It supports **dry-run previews**, **live streaming logs**, **optional aggressive cleanup**, and **root-aware** system tasks (journald vacuum, Snap/Flatpak pruning, old kernel removal, etc.).
+**BlitzSweep** is a fast, no-nonsense GUI utility to clean common caches, logs, and stale data on Ubuntu (and Debian-based) systems. It supports **dry-run previews**, **live streaming logs**, **optional aggressive cleanup**, and **root-aware** system tasks (journald vacuum, Snap/Flatpak pruning, old kernel removal, etc.).
 
 * * *
 
@@ -18,7 +18,7 @@
 - **Freed Space** live counter (top-right)
 - Per-path toggles in **Preferences**
 - Root-aware with `pkexec`, optional shutdown after run
-- Config at `~/.config/blitzclean/config`
+- Config at `~/.config/blitzsweep/config`
 
 * * *
 
@@ -47,12 +47,12 @@ sudo apt install -y python3-pyqt6 python3-pyqt6.qt6-tools trash-cli
 
 ## Installation
 
-Download the latest DEB version from the [releases](https://github.com/neoslab/blitzclean/releases/) section (the current version is v5.0.7) and use the following command:
+Download the latest DEB version from the [releases](https://github.com/neoslab/blitzsweep/releases/) section (the current version is v5.0.7) and use the following command:
 
 ```bash
 cd /tmp/
-wget https://github.com/neoslab/blitzclean/releases/download/v5.0.7/blitzclean_5.0.7_all.deb
-sudo dpkg -i blitzclean_5.0.7_all.deb
+wget https://github.com/neoslab/blitzsweep/releases/download/v5.0.9/blitzsweep_5.0.9_all.deb
+sudo dpkg -i blitzsweep_5.0.9_all.deb
 ```
 
 * * *
@@ -98,7 +98,7 @@ Core modules:
 * `SysUtils`, `ShellExec`, `ProcessManager`, `FileOps`
 * `SysCleaner` (orchestration + totals + stop handling)
 * `ConfigManager`, `UserDiscovery`
-* `PrefsDialog`, `AboutDialog`, `BlitzClean`, `App`
+* `PrefsDialog`, `AboutDialog`, `BlitzSweep`, `App`
 
 * * *
 
@@ -107,8 +107,8 @@ Core modules:
 To modify or extend this script in a Python environment such as PyCharm or any other IDE, make sure to install the required dependencies by running:
 
 ```bash
-git clone https://github.com/neoslab/blitzclean
-cd blitzclean
+git clone https://github.com/neoslab/blitzsweep
+cd blitzsweep
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 python main.py

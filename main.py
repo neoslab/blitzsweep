@@ -60,19 +60,19 @@ from urllib.request import Request
 from urllib.request import urlopen
 
 # Define 'VERSION'
-VERSION = "v5.0.7"
+VERSION = "v5.0.9"
 
 # Define 'APPNAME'
-APPNAME = "BlitzClean"
+APPNAME = "BlitzSweep"
 
 # Define 'WEBSITEURL'
 WEBSITEURL = "https://neoslab.com"
 
 # Define 'CONFIGPATH'
-CONFIGPATH = Path.home() / ".config" / "blitzclean"
+CONFIGPATH = Path.home() / ".config" / "blitzsweep"
 
 # Define 'CONFIGFILE'
-CONFIGFILE = CONFIGPATH / "blitzclean.conf"
+CONFIGFILE = CONFIGPATH / "blitzsweep.conf"
 
 # Define 'USERPATH' (updated - removed program-specific paths)
 USERPATH = [
@@ -111,6 +111,9 @@ PROGRAMS = {
     "Android": [
         ".android",
         "Android"
+    ],
+    "BlitzClean": [
+        ".config/blitzclean"
     ],
     "Discord": [
         ".cache/discord",
@@ -201,6 +204,11 @@ PROGRAMS = {
     ],
     "TubeReaver": [
         ".config/tubereaver"
+    ],
+    "VirtualBox": [
+        ".config/virtualbox",
+        "VirtualBox VMs",
+        "VirtualBox"
     ],
     "VisualCode": [
         ".cache/vscode"
@@ -636,7 +644,7 @@ class ConfigManager:
     def save(opts: ExecOpts, runbootstart: bool, runshutdown: bool, pathopts: Dict[str, bool]):
         """
         Persist ExecOpts, scheduler flags, and per-path options to disk.
-        Writes a simple key=value file under ~/.config/blitzclean/config.
+        Writes a simple key=value file under ~/.config/blitzsweep/config.
         Silently ignores filesystem errors to avoid crashing the UI.
         """
         try:
@@ -1413,7 +1421,7 @@ class DialogAbout(QDialog):
         """
         Initialize the About dialog with branding and metadata.
         Sets up logo, title, version, description, and a clickable website link.
-        Uses /usr/share/pixmaps/blitzclean.png as the primary logo path with fallbacks.
+        Uses /usr/share/pixmaps/blitzsweep.png as the primary logo path with fallbacks.
         """
         super().__init__(parent)
         self.setWindowTitle(f"About {APPNAME}")
@@ -1423,7 +1431,7 @@ class DialogAbout(QDialog):
         logolabel = QLabel()
         logolabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         logopath = [
-            Path("/usr/share/pixmaps/blitzclean.png")
+            Path("/usr/share/pixmaps/blitzsweep.png")
         ]
 
         pix: Optional[QPixmap] = None
@@ -1496,9 +1504,9 @@ class DialogCompleted(QDialog):
         iconlabel = QLabel()
         iconlabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         iconpath = [
-            Path("/usr/share/blitzclean/icons/success.png")
+            Path("/usr/share/blitzsweep/icons/success.png")
         ] if not error_message else [
-            Path("/usr/share/blitzclean/icons/error.png")
+            Path("/usr/share/blitzsweep/icons/error.png")
         ]
 
         pix: Optional[QPixmap] = None
@@ -1553,10 +1561,10 @@ class DialogCompleted(QDialog):
         self.exec()
 
 
-# Class 'BlitzClean'
-class BlitzClean(QWidget):
+# Class 'BlitzSweep'
+class BlitzSweep(QWidget):
     """
-    Main GUI window for BlitzClean, an Ubuntu cleanup tool.
+    Main GUI window for BlitzSweep, an Ubuntu cleanup tool.
     Provides run/dry-run controls, live progress table, and preferences.
     Delegates cleanup work to a background thread for responsiveness.
     """
@@ -2146,7 +2154,7 @@ class UpdateChecker:
 # Class 'AppEntry'
 class AppEntry:
     """
-    Minimal application bootstrapper for the BlitzClean GUI/worker.
+    Minimal application bootstrapper for the BlitzSweep GUI/worker.
     Runs the GUI normally or a worker process when invoked with --worker.
     Encapsulates QApplication lifecycle and exit handling.
     """
@@ -2211,15 +2219,15 @@ class AppEntry:
                 return 1
 
         app = QApplication(sys.argv)
-        win = BlitzClean()
+        win = BlitzSweep()
         win.show()
 
         checker = UpdateChecker(
             parent=win,
             appname=APPNAME,
             currvers=VERSION,
-            gitrepo="neoslab/blitzclean",
-            logo_paths=[Path("/usr/share/pixmaps/blitzclean.png")],
+            gitrepo="neoslab/blitzsweep",
+            logo_paths=[Path("/usr/share/pixmaps/blitzsweep.png")],
         )
         win.updatecheck = checker
         QTimer.singleShot(1500, checker.checknotify)

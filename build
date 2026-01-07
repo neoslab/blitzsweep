@@ -8,13 +8,13 @@ devname="NeosLab"
 devmail="support@neoslab.com"
 
 # Define 'appname'
-appname="BlitzClean"
+appname="BlitzSweep"
 
 # Define 'debname'
-debname="blitzclean"
+debname="blitzsweep"
 
 # Define 'debvers'
-debvers="5.0.7"
+debvers="5.0.9"
 
 # Define 'debarch'
 debarch="all"
@@ -65,9 +65,13 @@ cat > "${pkgroot}/DEBIAN/preinst" <<'EOF'
 set -e
 echo "Clean legacy locations from old packages..."
 rm -f /usr/local/bin/blitzclean
+rm -f /usr/local/bin/blitzsweep
 rm -f /usr/share/pixmaps/blitzclean.png
+rm -f /usr/share/pixmaps/blitzsweep.png
 rm -f /usr/share/applications/blitzclean.desktop
+rm -f /usr/share/applications/blitzsweep.desktop
 rm -rf /usr/share/blitzclean
+rm -rf /usr/share/blitzsweep
 sleep 1s
 exit 0
 EOF
