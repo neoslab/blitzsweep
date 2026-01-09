@@ -60,7 +60,7 @@ from urllib.request import Request
 from urllib.request import urlopen
 
 # Define 'VERSION'
-VERSION = "v5.0.9"
+VERSION = "v5.1.0"
 
 # Define 'APPNAME'
 APPNAME = "BlitzSweep"
@@ -74,7 +74,7 @@ CONFIGPATH = Path.home() / ".config" / "blitzsweep"
 # Define 'CONFIGFILE'
 CONFIGFILE = CONFIGPATH / "blitzsweep.conf"
 
-# Define 'USERPATH' (updated - removed program-specific paths)
+# Define 'USERPATH'
 USERPATH = [
     ".cache/babl",
     ".cache/fontconfig",
@@ -106,7 +106,7 @@ USERPATH = [
     ".zshrc.bak"
 ]
 
-# Define 'PROGRAMS' - new dictionary mapping program names to their paths
+# Define 'PROGRAMS'
 PROGRAMS = {
     "Android": [
         ".android",
@@ -114,6 +114,9 @@ PROGRAMS = {
     ],
     "BlitzClean": [
         ".config/blitzclean"
+    ],
+    "Cubic": [
+        ".cache/cubic"
     ],
     "Discord": [
         ".cache/discord",
