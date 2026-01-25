@@ -3,7 +3,7 @@
 ![Python Version](https://img.shields.io/badge/python-3.12%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
-**BlitzSweep** is a fast, no-nonsense GUI utility to clean common caches, logs, and stale data on Ubuntu (and Debian-based) systems. It supports **dry-run previews**, **live streaming logs**, **optional aggressive cleanup**, and **root-aware** system tasks (journald vacuum, Snap/Flatpak pruning, old kernel removal, etc.).
+**BlitzSweep** is a fast, no-nonsense desktop utility for removing caches, logs, and stale system data on Ubuntu and Debian-based Linux distributions. It supports **dry-run previews**, **live streaming logs**, **optional aggressive cleanup**, and **root-aware** system tasks (journald vacuum, Snap/Flatpak pruning, old kernel removal, etc.).
 
 * * *
 
