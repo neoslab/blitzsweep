@@ -35,7 +35,7 @@
 ## Requirements
 
 - Ubuntu 22.04+ (or Debian-based)
-- Python **3.9+**
+- Python **3.12+**
 - Packages:
 
 ```bash
@@ -47,12 +47,12 @@ sudo apt install -y python3-pyqt6 python3-pyqt6.qt6-tools trash-cli
 
 ## Installation
 
-Download the latest DEB version from the [releases](https://github.com/neoslab/blitzsweep/releases/) section (the current version is v5.0.7) and use the following command:
+Download the latest DEB version from the [releases](https://github.com/neoslab/blitzsweep/releases/) section (the current version is v5.1.1) and use the following command:
 
 ```bash
 cd /tmp/
-wget https://github.com/neoslab/blitzsweep/releases/download/v5.0.9/blitzsweep_5.0.9_all.deb
-sudo dpkg -i blitzsweep_5.0.9_all.deb
+wget https://github.com/neoslab/blitzsweep/releases/download/v5.1.1/blitzsweep_5.1.1_all.deb
+sudo dpkg -i blitzsweep_5.1.1_all.deb
 ```
 
 * * *
