@@ -60,7 +60,7 @@ from urllib.request import Request
 from urllib.request import urlopen
 
 # Define 'VERSION'
-VERSION = "v5.1.1"
+VERSION = "v5.1.2"
 
 # Define 'APPNAME'
 APPNAME = "BlitzSweep"
@@ -111,6 +111,9 @@ PROGRAMS = {
     "Android": [
         ".android",
         "Android"
+    ],
+    "Cargo": [
+        ".cargo"
     ],
     "BlitzClean": [
         ".config/blitzclean"
@@ -210,6 +213,7 @@ PROGRAMS = {
     ],
     "VirtualBox": [
         ".config/virtualbox",
+        ".config/VirtualBox",
         "VirtualBox VMs",
         "VirtualBox"
     ],
