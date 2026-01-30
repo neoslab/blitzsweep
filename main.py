@@ -60,7 +60,7 @@ from urllib.request import Request
 from urllib.request import urlopen
 
 # Define 'VERSION'
-VERSION = "v5.1.2"
+VERSION = "v5.1.3"
 
 # Define 'APPNAME'
 APPNAME = "BlitzSweep"
@@ -113,7 +113,9 @@ PROGRAMS = {
         "Android"
     ],
     "Cargo": [
-        ".cargo"
+        ".cargo",
+        "configfiles": [".profile", ".zshenv"],
+        "removecontent": '. "$HOME/.cargo/env"'
     ],
     "BlitzClean": [
         ".config/blitzclean"
@@ -186,6 +188,9 @@ PROGRAMS = {
     "Rhythmbox": [
         ".cache/rhythmbox",
         ".local/share/rhythmbox"
+    ],
+    "Rustup": [
+        ".rustup"
     ],
     "Shotwell": [
         ".cache/shotwell",
@@ -1059,17 +1064,63 @@ class SysCleaner:
                 else:
                     self.addbytes(FileOps.removefile(t, self.opts.dryrun, self.filecb))
 
+    # Function 'removecargoline'
+    def removecargoline(self, filepath: Path, removecontent: str):
+        """
+        Remove the Cargo line from a shell config file.
+        """
+        try:
+            if self.opts.dryrun:
+                self.filecb(f"Would remove Cargo line from {filepath}", 0, "-")
+                return
+            
+            # Read the file
+            content = filepath.read_text(encoding='utf-8')
+            lines = content.splitlines(keepends=True)  # keepends preserves line endings
+            
+            # Remove lines containing the Cargo env line
+            original_line_count = len(lines)
+            lines = [line for line in lines if removecontent.strip() not in line.strip()]
+            
+            # If we removed any lines, write the file back
+            if len(lines) != original_line_count:
+                # Create backup
+                backup_path = filepath.with_suffix(filepath.suffix + '.blitzsweep.bak')
+                try:
+                    shutil.copy2(filepath, backup_path)
+                except (OSError, PermissionError):
+                    pass
+                
+                # Write new content
+                filepath.write_text(''.join(lines), encoding='utf-8')
+                
+                # Try to remove backup (optional cleanup)
+                try:
+                    if backup_path.exists():
+                        backup_path.unlink()
+                except (OSError, PermissionError):
+                    pass
+                
+                self.filecb(f"Removed Cargo line from {filepath}", 0, "-")
+            else:
+                # Line not found in file
+                self.filecb(f"No Cargo line found in {filepath}", 0, "-")
+                
+        except (OSError, PermissionError, UnicodeDecodeError) as e:
+            # If we can't process the file, skip it
+            self.filecb(f"Failed to process {filepath}: {str(e)}", 0, "-")
+
     # Function 'cleanupprograms'
     def cleanupprograms(self, uh: Path):
         """
         Clean program-specific paths based on user selection.
         If a program is enabled in pathopts, remove all its associated paths.
         Special handling for Evolution: also run dconf reset command.
+        Special handling for Cargo: also remove from shell config files.
         """
         for program_name, paths in PROGRAMS.items():
             if not self.enabled(f"program.{program_name}"):
                 continue
-
             self.checkstop()
 
             # Clean all paths for this program
@@ -1085,12 +1136,22 @@ class SysCleaner:
             # Special handling for Evolution
             if program_name == "Evolution" and self.enabled(f"program.{program_name}"):
                 self.checkstop()
-                # Run dconf reset command for Evolution
                 if not self.opts.dryrun:
                     ShellExec.cmdrun("dconf reset -f /org/gnome/evolution/", dryrun=False)
                 else:
                     # In dry-run mode, just emit a row for the dconf operation
                     self.filecb("dconf reset -f /org/gnome/evolution/", 0, "-")
+            
+            # Special handling for Cargo
+            if program_name == "Cargo" and self.enabled(f"program.{program_name}"):
+                self.checkstop()
+                cargoline = '. "$HOME/.cargo/env"'
+                configfiles = [".profile", ".zshenv"]
+                
+                for config_file in configfiles:
+                    config_path = uh / config_file
+                    if config_path.exists() and config_path.is_file():
+                        self.removecargoline(config_path, cargoline)
 
     # Function 'cleanupuser'
     def cleanupuser(self, uh: Path):
