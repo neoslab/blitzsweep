@@ -60,7 +60,7 @@ from urllib.request import Request
 from urllib.request import urlopen
 
 # Define 'VERSION'
-VERSION = "v5.1.3"
+VERSION = "v5.1.4"
 
 # Define 'APPNAME'
 APPNAME = "BlitzSweep"
@@ -106,125 +106,193 @@ USERPATH = [
     ".zshrc.bak"
 ]
 
-# Define 'PROGRAMS'
+# Define 'PROGRAMS' with corrected structure
 PROGRAMS = {
-    "Android": [
-        ".android",
-        "Android"
-    ],
-    "Cargo": [
-        ".cargo",
+    "Android": {
+        "paths": [".android", "Android"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Cargo": {
+        "paths": [".cargo"],
         "configfiles": [".profile", ".zshenv"],
         "removecontent": '. "$HOME/.cargo/env"'
-    ],
-    "BlitzClean": [
-        ".config/blitzclean"
-    ],
-    "Cubic": [
-        ".cache/cubic"
-    ],
-    "Discord": [
-        ".cache/discord",
-        ".config/discord"
-    ],
-    "EasyTag": [
-        ".cache/easytag"
-    ],
-    "Evolution": [
-        ".cache/evolution",
-        ".config/evolution",
-        ".config/goa-1.0",
-        ".local/share/evolution",
-        ".local/share/goa-1.0"
-    ],
-    "FileZilla": [
-        ".cache/filezilla",
-        ".config/filezilla"
-    ],
-    "Gimp": [
-        ".cache/gimp",
-        ".config/GIMP"
-    ],
-    "Git": [
-        ".cache/gitstatus",
-        ".config/GitKraken",
-        ".gitconfig",
-        ".gitkraken"
-    ],
-    "Inkscape": [
-        ".cache/inkscape",
-        ".config/inkscape"
-    ],
-    "JetBrains": [
-        ".cache/JetBrains",
-        ".cache/JNA",
-        ".config/JetBrains"
-    ],
-    "Kdenlive": [
-        ".cache/kdenlive",
-        ".config/kdeglobals",
-        ".config/kdenlive-layoutsrc",
-        ".config/kdenliverc"
-    ],
-    "Keepassxc": [
-        ".cache/keepassxc",
-        ".config/keepassxc"
-    ],
-    "Mediasane": [
-        ".config/mediasane"
-    ],
-    "Microsoft": [
-        ".cache/Microsoft"
-    ],
-    "Proton": [
-        ".cache/Proton AG",
-        ".cache/Proton",
-        ".cache/protonmail"
-    ],
-    "Rclone": [
-        ".config/rclone",
-        ".config/rclone-browser"
-    ],
-    "Rhythmbox": [
-        ".cache/rhythmbox",
-        ".local/share/rhythmbox"
-    ],
-    "Rustup": [
-        ".rustup"
-    ],
-    "Shotwell": [
-        ".cache/shotwell",
-        ".config/shotwell"
-    ],
-    "Shutter": [
-        ".cache/shutter",
-        ".shutter"
-    ],
-    "SublimeText": [
-        ".cache/sublime-text"
-    ],
-    "Telegram": [
-        ".local/share/TelegramDesktop"
-    ],
-    "Thunderbird": [
-        ".cache/thunderbird"
-    ],
-    "Transmission": [
-        ".cache/transmission",
-        ".config/transmission"
-    ],
-    "TubeReaver": [
-        ".config/tubereaver"
-    ],
-    "VirtualBox": [
-        ".config/virtualbox",
-        ".config/VirtualBox",
-        "VirtualBox VMs",
-        "VirtualBox"
-    ],
-    "VisualCode": [
-        ".cache/vscode"
-    ]
+    },
+    "BlitzClean": {
+        "paths": [".config/blitzclean"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Brave": {
+        "paths": [".cache/BraveSoftware", ".config/BraveSoftware"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Cubic": {
+        "paths": [".cache/cubic"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Discord": {
+        "paths": [".cache/discord", ".config/discord"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "EasyTag": {
+        "paths": [".cache/easytag"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Evolution": {
+        "paths": [
+            ".cache/evolution",
+            ".config/evolution",
+            ".config/goa-1.0",
+            ".local/share/evolution",
+            ".local/share/goa-1.0"
+        ],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "FileZilla": {
+        "paths": [".cache/filezilla", ".config/filezilla"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Gimp": {
+        "paths": [".cache/gimp", ".config/GIMP"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Git": {
+        "paths": [
+            ".cache/gitstatus",
+            ".config/GitKraken",
+            ".gitconfig",
+            ".gitkraken"
+        ],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Inkscape": {
+        "paths": [".cache/inkscape", ".config/inkscape"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "JetBrains": {
+        "paths": [
+            ".junie",
+            ".cache/JetBrains",
+            ".cache/JNA",
+            ".config/JetBrains"
+        ],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Kdenlive": {
+        "paths": [
+            ".cache/kdenlive",
+            ".config/kdeglobals",
+            ".config/kdenlive-layoutsrc",
+            ".config/kdenliverc"
+        ],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Keepassxc": {
+        "paths": [".cache/keepassxc", ".config/keepassxc"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Mediasane": {
+        "paths": [".config/mediasane"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Microsoft": {
+        "paths": [".cache/Microsoft"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Opera": {
+        "paths": [".cache/opera", ".config/opera"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Proton": {
+        "paths": [
+            ".cache/Proton AG",
+            ".cache/Proton",
+            ".cache/protonmail"
+        ],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Rclone": {
+        "paths": [".config/rclone", ".config/rclone-browser"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Rhythmbox": {
+        "paths": [".cache/rhythmbox", ".local/share/rhythmbox"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Rustup": {
+        "paths": [".rustup"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Shotwell": {
+        "paths": [".cache/shotwell", ".config/shotwell"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Shutter": {
+        "paths": [".cache/shutter", ".shutter"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "SublimeText": {
+        "paths": [".cache/sublime-text"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Telegram": {
+        "paths": [".local/share/TelegramDesktop"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Thunderbird": {
+        "paths": [".cache/thunderbird"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "Transmission": {
+        "paths": [".cache/transmission", ".config/transmission"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "TubeReaver": {
+        "paths": [".config/tubereaver"],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "VirtualBox": {
+        "paths": [
+            ".config/virtualbox",
+            ".config/VirtualBox",
+            "VirtualBox VMs",
+            "VirtualBox"
+        ],
+        "configfiles": [],
+        "removecontent": ""
+    },
+    "VisualCode": {
+        "paths": [".cache/vscode"],
+        "configfiles": [],
+        "removecontent": ""
+    }
 }
 
 # Define 'USERAGGRESIVE'
@@ -1068,44 +1136,58 @@ class SysCleaner:
     def removecargoline(self, filepath: Path, removecontent: str):
         """
         Remove the Cargo line from a shell config file.
+        Handles the line removal and trailing newlines properly.
         """
         try:
             if self.opts.dryrun:
                 self.filecb(f"Would remove Cargo line from {filepath}", 0, "-")
                 return
-            
+
             # Read the file
             content = filepath.read_text(encoding='utf-8')
             lines = content.splitlines(keepends=True)  # keepends preserves line endings
-            
-            # Remove lines containing the Cargo env line
-            original_line_count = len(lines)
-            lines = [line for line in lines if removecontent.strip() not in line.strip()]
-            
+
+            # Track if we found and removed any lines
+            lines_removed = []
+            for line in lines:
+                stripped_line = line.strip()
+                # Check if line contains the Cargo env line (exact match or with whitespace)
+                if removecontent.strip() in stripped_line:
+                    # Check for exact match or if the line starts with the removecontent
+                    if (stripped_line == removecontent.strip() or
+                            stripped_line.startswith(removecontent.strip())):
+                        continue  # Skip this line
+                lines_removed.append(line)
+
             # If we removed any lines, write the file back
-            if len(lines) != original_line_count:
+            if len(lines_removed) != len(lines):
                 # Create backup
                 backup_path = filepath.with_suffix(filepath.suffix + '.blitzsweep.bak')
                 try:
                     shutil.copy2(filepath, backup_path)
                 except (OSError, PermissionError):
                     pass
-                
-                # Write new content
-                filepath.write_text(''.join(lines), encoding='utf-8')
-                
+
+                # Write new content, preserving original newlines
+                new_content = ''.join(lines_removed)
+
+                # Remove any trailing blank lines left after removal
+                new_content = new_content.rstrip('\n') + '\n' if new_content.strip() else new_content.rstrip('\n')
+
+                filepath.write_text(new_content, encoding='utf-8')
+
                 # Try to remove backup (optional cleanup)
                 try:
                     if backup_path.exists():
                         backup_path.unlink()
                 except (OSError, PermissionError):
                     pass
-                
+
                 self.filecb(f"Removed Cargo line from {filepath}", 0, "-")
             else:
                 # Line not found in file
                 self.filecb(f"No Cargo line found in {filepath}", 0, "-")
-                
+
         except (OSError, PermissionError, UnicodeDecodeError) as e:
             # If we can't process the file, skip it
             self.filecb(f"Failed to process {filepath}: {str(e)}", 0, "-")
@@ -1118,13 +1200,13 @@ class SysCleaner:
         Special handling for Evolution: also run dconf reset command.
         Special handling for Cargo: also remove from shell config files.
         """
-        for program_name, paths in PROGRAMS.items():
+        for program_name, program_data in PROGRAMS.items():
             if not self.enabled(f"program.{program_name}"):
                 continue
             self.checkstop()
 
             # Clean all paths for this program
-            for rel in paths:
+            for rel in program_data["paths"]:
                 self.checkstop()
                 p = (uh / rel).expanduser()
                 if p.exists():
@@ -1141,17 +1223,15 @@ class SysCleaner:
                 else:
                     # In dry-run mode, just emit a row for the dconf operation
                     self.filecb("dconf reset -f /org/gnome/evolution/", 0, "-")
-            
+
             # Special handling for Cargo
             if program_name == "Cargo" and self.enabled(f"program.{program_name}"):
                 self.checkstop()
-                cargoline = '. "$HOME/.cargo/env"'
-                configfiles = [".profile", ".zshenv"]
-                
-                for config_file in configfiles:
-                    config_path = uh / config_file
-                    if config_path.exists() and config_path.is_file():
-                        self.removecargoline(config_path, cargoline)
+                if program_data["configfiles"] and program_data["removecontent"]:
+                    for config_file in program_data["configfiles"]:
+                        config_path = uh / config_file
+                        if config_path.exists() and config_path.is_file():
+                            self.removecargoline(config_path, program_data["removecontent"])
 
     # Function 'cleanupuser'
     def cleanupuser(self, uh: Path):
@@ -1383,7 +1463,7 @@ class DialogPrefs(QDialog):
             v.addWidget(box)
 
         # Function 'addprogramsection'
-        def addprogramsection(title: str, programs: Dict[str, List[str]]):
+        def addprogramsection(title: str, programs: Dict[str, dict]):
             """
             Helper to add a titled group of checkboxes for programs.
             Creates one checkbox per program with the program name.
